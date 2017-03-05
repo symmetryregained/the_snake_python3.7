@@ -28,6 +28,7 @@ myfonts = dict(smallfont=pygame.font.SysFont("comicsansms", 15),
 
 # Global gameplay variables
 level = 0
+global FPS
 FPS = 5
 
 # initializing window for display
@@ -43,15 +44,18 @@ while gui:
     if version == 'slither_class':
         from versions import slither_class
         game = slither_class.gameplay(grid, block_size)
+        game.difficulty = 5
     switch = True
     while switch:
-        dt = clock.tick(FPS)
+        clock.tick(FPS + game.level)
 
         events = pygame.event.get()
-        game.update(events, dt)
+        game.update(events)
 
         screen.fill(colors['white'])
-        tools.score_menu(menu_width, game.score, colors, myfonts, display_size, screen)
+
+        tools.score_menu(menu_width, game.score, game.level, colors, myfonts, display_size, screen)
+
         game.draw(img_head, colors['green'], img_apple, screen)
 
         for event in events:

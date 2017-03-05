@@ -82,7 +82,7 @@ def game_over(score, colors, fonts, screen_size, screen):
                     gameover = False
 
         screen.fill(colors['white'])
-        msg2screen("Gameover", colors['green'], -120, "large",\
+        msg2screen("Game Over", colors['green'], -120, "large",\
                     fonts, screen_size, screen)
         if score == 1:
             msg2screen(("Slither has eaten only 1 apple.".format(score)),\
@@ -96,9 +96,13 @@ def game_over(score, colors, fonts, screen_size, screen):
 
         pygame.display.update()
 
-def score_menu(width, score, colors, fonts, screen_size, screen):
+def score_menu(width, score, level, colors, fonts, screen_size, screen):
     scoretext = text_obj("Score {0}".format(score), \
                 colors['black'], 'medium', fonts)
     pygame.draw.lines(screen, colors['black'], False, \
      [(0, screen_size[1] - width), (screen_size[0], screen_size[1] - width)], 1)
     screen.blit(scoretext[0], (1, screen_size[1] - width + 1))
+    
+    leveltext = text_obj("Level {0}".format(level), \
+                colors['black'], 'medium', fonts)
+    screen.blit(leveltext[0], (screen_size[0] - leveltext[1][2], screen_size[1] - width + 1))

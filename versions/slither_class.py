@@ -51,7 +51,9 @@ class gameplay:
         blocksize: int
             defines the size of each square block.
         """
+        self.difficulty = 10
         self.score = 0
+        self.level = 0
         self.gameover = gameover
         self.steps = max_step
         self.blocksize = blocksize
@@ -68,7 +70,7 @@ class gameplay:
         self.apple = vector2(randint(0, self.steps[0] - 1),\
                              randint(0, self.steps[1] - 1))
 
-    def update(self, events, dt:float):
+    def update(self, events):
         """ Updates the position of snake with:
 
         1. Movement direction update
@@ -144,6 +146,9 @@ class gameplay:
             # the apple)
             self.slither.body.insert(0, self.slither.body[0])
             self.score += 1
+            # increases the level/speed only if it eats the apple every 15th time
+            if self.score % self.difficulty == 0:
+                self.level+= 1
 
         # deletes the position of the tail from the body;
         # avoided issue: note that deletion of the tail has to happen <after> the growth of
@@ -156,7 +161,6 @@ class gameplay:
         for part in self.slither.body[:-1]:
             if (self.slither.head.x, self.slither.head.y) == (part.x, part.y):
                self.gameover = True
-               print('Game over')
 
     def draw(self, snake_head, snake_color, apple_img, screen: Surface):
         """ A function that draws the snake (and apples) onto screen
@@ -176,6 +180,3 @@ class gameplay:
             head = pygame.transform.rotate(snake_head, 180)
         self.slither.draw_snake(head, snake_color, screen, self.blocksize)
         screen.blit(apple_img, (self.apple.x * self.blocksize, self.apple.y * self.blocksize))
-        #pygame.draw.rect(screen, apple_color, \
-        #    [self.apple.x * self.blocksize, self.apple.y * self.blocksize, \
-        #    self.blocksize - 1, self.blocksize - 1])
