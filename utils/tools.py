@@ -2,7 +2,7 @@ import pygame, sys
 
 def game_intro(screen_size, colors, fonts, screen):
     intro = True
-    version = None
+    game = None
     while intro:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -11,10 +11,7 @@ def game_intro(screen_size, colors, fonts, screen):
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    version = 'simple'
-                    intro = False
-                elif event.key == pygame.K_v:
-                    version = 'slither_class'
+                    game = 'slither_class'
                     intro = False
                 elif event.key == pygame.K_q:
                     pygame.quit()
@@ -28,16 +25,14 @@ def game_intro(screen_size, colors, fonts, screen):
                     colors['black'], -30, "small", fonts, screen_size, screen)
         msg2screen("The more apples you eat, the longer you get...",\
                     colors['black'], 10, "small", fonts, screen_size, screen)
-        msg2screen("If you bite into yourself, you die!",\
+        msg2screen("Don't bite into yourself, because you will die!",\
                     colors['black'], 50, "small", fonts, screen_size, screen)
-        msg2screen("Press s to play crude version or",\
-                    colors['black'], 130, "small", fonts, screen_size, screen)
-        msg2screen("press v to play class-based version of Slither",\
+        msg2screen("press S to start Slither",\
                     colors['black'], 150, "small", fonts, screen_size, screen)
-        msg2screen("Press p to pause or press q to quit",\
+        msg2screen("Press Q to quit",\
                     colors['black'], 180, "small", fonts, screen_size, screen)
         pygame.display.update()
-    return version
+    return game
 
 # general text object
 def text_obj(text, color, size, fonts):
@@ -59,15 +54,13 @@ def pause(score, colors, fonts, screen_size, screen):
     paused = True
     switch = True
     msg2screen("Paused", colors['green'], -100, "large", fonts, screen_size, screen)
-    msg2screen("Press C to continue or Q to quit.", colors['green'], 25,\
-               "medium", fonts, screen_size, screen)
+    msg2screen("Press C to continue or Q to quit the current game.", \
+        colors['green'], 25, "medium", fonts, screen_size, screen)
     pygame.display.update()
     while paused:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit('You exited the game')
-
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_c:
                     paused = False
@@ -75,7 +68,6 @@ def pause(score, colors, fonts, screen_size, screen):
                     game_over(score, colors, fonts, screen_size, screen)
                     switch = False
                     paused = False
-
     return switch
 
 def game_over(score, colors, fonts, screen_size, screen):
@@ -86,15 +78,12 @@ def game_over(score, colors, fonts, screen_size, screen):
                 pygame.quit()
                 sys.exit('You exited the game')
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q:
+                if event.key == pygame.K_m:
                     gameover = False
 
         screen.fill(colors['white'])
         msg2screen("Gameover", colors['green'], -120, "large",\
                     fonts, screen_size, screen)
-        # msg2screen(("Your score is {}".format(score)),\
-        #            colors['red'], -30, "medium", fonts, screen_size, screen)
-
         if score == 1:
             msg2screen(("Slither has eaten only 1 apple.".format(score)),\
                        colors['red'], -30, "small", fonts, screen_size, screen)
@@ -102,13 +91,14 @@ def game_over(score, colors, fonts, screen_size, screen):
             msg2screen(("Slither has eaten {} apples.".format(score)),\
                        colors['red'], -30, "small", fonts, screen_size, screen)
 
-        msg2screen("Press q to return to start screen",\
+        msg2screen("Press M to return to the Main Menu",\
                     colors['black'], 180, "small", fonts, screen_size, screen)
 
         pygame.display.update()
 
-def score_menu(score, colors, fonts, screen_size, screen):
-    pygame.draw.lines(screen, colors['black'], False, [(0, 35), (screen_size[1], 35)], 1)
-    scoretext = fonts['medfont'].render("Score {0}".format(score),\
-                       1, colors['black'])
-    screen.blit(scoretext, (1, 1))
+def score_menu(width, score, colors, fonts, screen_size, screen):
+    scoretext = text_obj("Score {0}".format(score), \
+                colors['black'], 'medium', fonts)
+    pygame.draw.lines(screen, colors['black'], False, \
+     [(0, screen_size[1] - width), (screen_size[0], screen_size[1] - width)], 1)
+    screen.blit(scoretext[0], (1, screen_size[1] - width + 1))

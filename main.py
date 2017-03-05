@@ -9,10 +9,11 @@ img_apple = pygame.image.load('images/apple.png')
 img_head = pygame.image.load('images/snake_head.png')
 
 # defining game dimensions
-up_width = 30
+
 block_size = img_head.get_width() #20
+menu_width = 2 * block_size
 grid = [35, 25]  # Here we define the grid(x,y) for the display (e.g. 35x25).
-display_size = grid[0] * block_size, grid[1] * block_size + up_width
+display_size = grid[0] * block_size, grid[1] * block_size + menu_width
 
 # defining colors
 colors = dict(white=(255, 255, 255),
@@ -36,10 +37,10 @@ clock = pygame.time.Clock()
 gui = True
 while gui:
     version = tools.game_intro(display_size, colors, myfonts, screen)
-    if version == 'simple':
-        from versions import simple
-        game = simple.gameplay(grid, block_size)
-    elif version == 'slither_class':
+    #if version == 'simple':
+    #    from versions import simple
+    #    game = simple.gameplay(grid, block_size)
+    if version == 'slither_class':
         from versions import slither_class
         game = slither_class.gameplay(grid, block_size)
     switch = True
@@ -50,10 +51,7 @@ while gui:
         game.update(events, dt)
 
         screen.fill(colors['white'])
-        #scoretext = myfonts['medfont'].render("Score {0}".format(game.score),\
-        #                   1, colors['black'])
-        #screen.blit(scoretext, (1, 1))
-        tools.score_menu(game.score, colors, myfonts, display_size, screen)
+        tools.score_menu(menu_width, game.score, colors, myfonts, display_size, screen)
         game.draw(img_head, colors['green'], img_apple, screen)
 
         for event in events:
