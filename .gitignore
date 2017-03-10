@@ -1,0 +1,5 @@
+#Ipython Notebook
+.ipynb_checkpoints
+
+#Byte-compiled files
+__pycache__/
