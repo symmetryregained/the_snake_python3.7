@@ -1,6 +1,7 @@
 import pygame
 from random import randint
 from pygame.surface import Surface
+from utils import collcond
 
 init_direction = 'right'
 
@@ -52,14 +53,7 @@ class gameplay:
                     self.direction = "down"
                     self.velocity = vector2(0, 1)
 
-        if self.slither.head.x == self.steps[0] - 1 and self.direction == "right":
-            self.slither.head.x = - 1
-        elif self.slither.head.x == 0 and self.direction == "left":
-            self.slither.head.x = self.steps[0]
-        elif self.slither.head.y == self.steps[1] - 1 and self.direction == "down":
-            self.slither.head.y = - 1
-        elif self.slither.head.y == 0 and self.direction == "up":
-            self.slither.head.y = self.steps[1]
+        collcond.block(self.slither.head, self.steps, self.direction)
 
         self.slither.head = vector2(self.slither.head.x + self.velocity.x, \
                                     self.slither.head.y + self.velocity.y)
